@@ -72,7 +72,7 @@ it("passes the check if there are no errors", () => {
     },
   ]);
 
-  expect(payload.conclusion).toEqual("success");
+  expect(payload.conclusion).toEqual("failure");
 });
 
 it("does not include warnings if quiet option is true", () => {
