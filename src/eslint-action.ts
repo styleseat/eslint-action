@@ -29,17 +29,18 @@ async function run(): Promise<void> {
     const files = await getChangedFiles(octokit, inputs.files, prNumber, getSha());
     core.debug(`${files.length} files match ${inputs.files}.`);
 
+    const {
+      data: { id: checkId },
+    } = await octokit.checks.create({
+      owner: OWNER,
+      repo: REPO,
+      started_at: new Date().toISOString(),
+      head_sha: getSha(),
+      status: "in_progress",
+      name: CHECK_NAME,
+    });
+
     if (files.length > 0) {
-      const {
-        data: { id: checkId },
-      } = await octokit.checks.create({
-        owner: OWNER,
-        repo: REPO,
-        started_at: new Date().toISOString(),
-        head_sha: getSha(),
-        status: "in_progress",
-        name: CHECK_NAME,
-      });
       const report = await lint(files);
       const payload = processResults(report);
       const maxChunk = 50;
@@ -80,6 +81,13 @@ async function run(): Promise<void> {
       }
     } else {
       core.info("No files to lint.");
+      await octokit.checks.update({
+        owner: OWNER,
+        repo: REPO,
+        completed_at: new Date().toISOString(),
+        status: "completed",
+        check_run_id: checkId,
+      });
     }
   } catch (err) {
     core.setFailed(err.message ? err.message : "Error linting files.");
