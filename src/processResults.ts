@@ -65,7 +65,7 @@ export function processResults(
   }
 
   return {
-    conclusion: errorCount > 0 ? "failure" : "success",
+    conclusion: (errorCount > 0 || annotations.length > 0) ? "failure" : "success",
     output: {
       title: CHECK_NAME,
       summary: `${errorCount} error(s) found`,
