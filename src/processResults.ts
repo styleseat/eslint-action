@@ -42,7 +42,7 @@ export function processResults(
         continue;
       }
 
-      if (severity === 2) {
+      if (severity === 2 || inputs.failOnWarnings) {
         errorCount++;
       } else if (inputs.quiet) {
         // skip message if quiet is true
@@ -64,10 +64,8 @@ export function processResults(
     }
   }
 
-  const isSuccessful = inputs.failOnWarnings ? annotations.length > 0 : errorCount > 0;
-
   return {
-    conclusion: isSuccessful ? "failure" : "success",
+    conclusion: errorCount > 0 ? "failure" : "success",
     output: {
       title: CHECK_NAME,
       summary: `${errorCount} error(s) found`,

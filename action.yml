@@ -24,7 +24,7 @@ inputs:
     default: "false"
     required: false
   fail-on-warnings:
-    description: "Fail the lint check if warnings are present."
+    description: "Fail the lint check if warnings are present. Overrides `quiet`."
     default: "false"
     required: false
 runs:
