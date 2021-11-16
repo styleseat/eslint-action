@@ -27,3 +27,9 @@ jobs:
           working-directory: "./my-package"
           quiet: "false"
 ```
+
+# Contributing
+
+Before opening a PR, make sure tests pass and build command is run:
+
+`npm run test && npm run build`

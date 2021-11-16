@@ -14,7 +14,6 @@ const processBooleanInput = (key: string): boolean => {
 };
 
 const inputs = {
-  /* istanbul ignore next */
   get token() {
     return core.getInput("repo-token", { required: true });
   },
@@ -31,13 +30,16 @@ const inputs = {
     return processArrayInput("files");
   },
 
-  /* istanbul ignore next */
   get cwd() {
     return core.getInput("working-directory");
   },
 
   get quiet() {
     return processBooleanInput("quiet");
+  },
+
+  get failOnWarnings() {
+    return processBooleanInput("fail-on-warnings");
   },
 };
 

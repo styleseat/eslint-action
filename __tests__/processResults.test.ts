@@ -12,6 +12,7 @@ jest.mock("@actions/core", () => ({
 
 jest.mock("../src/inputs", () => ({
   quiet: false,
+  failOnWarnings: false,
 }));
 
 const errorMsg = {
@@ -72,7 +73,7 @@ it("passes the check if there are no errors", () => {
     },
   ]);
 
-  expect(payload.conclusion).toEqual("failure");
+  expect(payload.conclusion).toEqual("success");
 });
 
 it("does not include warnings if quiet option is true", () => {
@@ -83,4 +84,19 @@ it("does not include warnings if quiet option is true", () => {
   const payload = processResults(mockResults);
   expect(payload.output?.annotations).toHaveLength(3);
   expect(payload.output?.annotations?.some((a) => a.annotation_level === "warning")).toBe(false);
+});
+
+it("fails the check if there are warnings and failOnWarnings is true", () => {
+  Object.defineProperty(inputs, "failOnWarnings", {
+    get: () => true,
+  });
+  const payload = processResults([
+    {
+      filePath: "/bar",
+      // @ts-expect-error
+      messages: [warnMsg, invalidMsg],
+    },
+  ]);
+
+  expect(payload.conclusion).toEqual("failure");
 });
