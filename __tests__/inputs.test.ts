@@ -41,3 +41,12 @@ describe("quiet", () => {
     expect(core.getInput).toHaveBeenCalledWith("quiet");
   });
 });
+
+describe("fail on warnings", () => {
+  it.each(["true", "TRUE", "True"])("supports %s", (input) => {
+    ((core.getInput as unknown) as jest.Mock).mockReturnValue(input);
+
+    expect(inputs.failOnWarnings).toEqual(true);
+    expect(core.getInput).toHaveBeenCalledWith("fail-on-warnings");
+  });
+});

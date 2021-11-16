@@ -64,8 +64,10 @@ export function processResults(
     }
   }
 
+  const isSuccessful = inputs.failOnWarnings ? annotations.length > 0 : errorCount > 0;
+
   return {
-    conclusion: (errorCount > 0 || annotations.length > 0) ? "failure" : "success",
+    conclusion: isSuccessful ? "failure" : "success",
     output: {
       title: CHECK_NAME,
       summary: `${errorCount} error(s) found`,

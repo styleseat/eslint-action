@@ -1,5 +1,5 @@
-name: "Eslint Annotate"
-description: "Lints changed files and annotates pull request diffs with errors."
+name: "ESLint Annotate"
+description: "Lints changed files and annotates pull request diffs with errors and warnings."
 inputs:
   repo-token:
     description: "Token used to interact with the Github API."
@@ -21,6 +21,10 @@ inputs:
     required: false
   quiet:
     description: "Silence annotations for ESLint warnings."
+    default: "false"
+    required: false
+  fail-on-warnings:
+    description: "Fail the lint check if warnings are present."
     default: "false"
     required: false
 runs:

@@ -72,6 +72,21 @@ it("passes the check if there are no errors", () => {
     },
   ]);
 
+  expect(payload.conclusion).toEqual("success");
+});
+
+it("fails the check if there are warnings and failOnWarnings is true", () => {
+  Object.defineProperty(inputs, "failOnWarnings", {
+    get: () => true,
+  });
+  const payload = processResults([
+    {
+      filePath: "/bar",
+      // @ts-expect-error
+      messages: [warnMsg, invalidMsg],
+    },
+  ]);
+
   expect(payload.conclusion).toEqual("failure");
 });
 
